@@ -1,0 +1,12 @@
+{
+  "list_write": "練習漢字リスト",
+  "title": "ライティングの練習",
+  "do_it": "やる",
+  "ren_siu_kanji": "漢字を書く練習をする",
+  "undo": "元に戻す",
+  "clear": "クリア",
+  "level": "レベル",
+  "message": "演習は完了しました",
+  "correct": "正しい",
+  "incorrect": "正しくない"
+}

@@ -1,0 +1,20 @@
+{
+  "sign_up": "Đăng Ký",
+  "account": "Tài khoản",
+  "user_name": "Tên người dùng",
+  "password": "Mật khẩu",
+  "confirm_password": "Nhập lại mật khẩu",
+  "email": "Email",
+  "phone": "SĐT",
+  "please_input_account": "Xin hãy nhập tài khoản",
+  "please_input_username": "Xin hãy nhập tên tài khoản",
+  "please_input_password": "Xin hãy nhập mật khẩu",
+  "please_input_confirm_password": "Xin hãy xác nhận mật khẩu",
+  "please_input_email": "Xin hãy nhập địa chỉ email",
+  "please_input_phone": "Xin hãy nhập số điện thoại",
+  "password_confirm_math": "Mật khẩu chưa khớp",
+  "or": "Hoặc",
+  "sign_in_now": "Đăng nhập ngay",
+  "sign_up_success": "Đăng ký thành công",
+  "user_already": "Tài khoản đã có người đăng ký"
+}

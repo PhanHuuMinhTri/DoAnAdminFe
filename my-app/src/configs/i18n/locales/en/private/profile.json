@@ -1,0 +1,18 @@
+{
+  "profile": "Thông tin cá nhân",
+  "user_name": "Tên",
+  "mail": "Email",
+  "phone": "SĐT",
+  "please_input_user_name": "Xin hãy nhập tên",
+  "please_input_email": "Xin hãy nhập email",
+  "please_input_phone": "Xin hãy nhập số điện thoại",
+  "save": "Lưu",
+  "security": "Bảo mật",
+  "change_pass": "Thay đổi mật khẩu",
+  "password": "Mật khẩu",
+  "confirm_password": "Xác nhận mật khẩu",
+  "please_input_password": "Xin hãy nhập mật khẩu",
+  "update_success": "Thay đổi thông tin thành công",
+  "update_avatar_success": "Thay đổi avatar thành công",
+  "password_confirm_math": "Mật khẩu chưa khớp"
+}

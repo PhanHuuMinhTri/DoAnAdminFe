@@ -1,0 +1,18 @@
+{
+  "profile": "プロフィール",
+  "user_name": "ユーザー名",
+  "mail": "メール",
+  "phone": "電話番号",
+  "please_input_user_name": "ユーザー名を入力してください",
+  "please_input_email": "メールを入力してください",
+  "please_input_phone": "電話番号を入力してください",
+  "save": "保存",
+  "security": "セキュリティ",
+  "change_pass": "パスワードを変更する",
+  "password": "パスワード",
+  "confirm_password": "パスワードを認証する",
+  "please_input_password": "パスワードを入力してください",
+  "update_success": "情報の更新に成功しました",
+  "update_avatar_success": "アバターの更新に成功しました",
+  "password_confirm_math": "パスワードと確認用パスワードが一致しません"
+}
