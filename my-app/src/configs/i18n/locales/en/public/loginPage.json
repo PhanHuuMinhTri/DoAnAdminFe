@@ -1,0 +1,12 @@
+{
+  "sign_in": "Đăng nhập",
+  "user_name": "Tên người dùng",
+  "password": "Mật khẩu",
+  "remeber_me": "Ghi nhớ",
+  "forgot_password": "Quên mật khẩu",
+  "or": "Hoặc",
+  "sign_up_now": "Đăng ký ngay",
+  "please_input_username": "Xin hãy nhập tên đăng nhập",
+  "please_input_password": "Xin hãy nhập mật khẩu",
+  "username_password_invalid": "Tên đăng nhập hoặc mật khẩu không đúng"
+}

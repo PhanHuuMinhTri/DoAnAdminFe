@@ -1,0 +1,20 @@
+{
+  "sign_up": "サインアップ",
+  "account": "アカウント",
+  "user_name": "ユーザー名",
+  "password": "パスワード",
+  "confirm_password": "パスワードを認証する",
+  "email": "メール",
+  "phone": "電話番号",
+  "please_input_account": "アカウントを入力してください",
+  "please_input_username": "ユーザー名を入力してください",
+  "please_input_password": "パスワードを入力してください",
+  "please_input_confirm_password": "パスワードを入力してください",
+  "please_input_email": "メールを入力してください",
+  "please_input_phone": "電話番号を入力してください",
+  "password_confirm_math": "パスワードと確認用パスワードが一致しません",
+  "or": "また",
+  "sign_in_now": "今すぐログイン",
+  "sign_up_success": "サインアップ成功",
+  "user_already": "ユーザーはすでにサインアップしています"
+}

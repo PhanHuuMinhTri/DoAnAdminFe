@@ -1,0 +1,12 @@
+{
+  "sign_in": "ログイン",
+  "user_name": "アカウント",
+  "password": "パスワード",
+  "remeber_me": "私を覚えてますか",
+  "forgot_password": "パスワードをお忘れですか",
+  "or": "また",
+  "sign_up_now": "今すぐサインアップ",
+  "please_input_username": "ユーザー名を入力してください",
+  "please_input_password": "パスワードを入力してください",
+  "username_password_invalid": "アカウントもしくはパスワードが無効です"
+}
