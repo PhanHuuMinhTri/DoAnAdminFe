@@ -30,7 +30,7 @@ const LoginScreen = () => {
 
   return (
     <LoginStyled>
-      <Title>{t("loginPage.sign_in")}</Title>
+      <Title>Admin TriChan {t("loginPage.sign_in")}</Title>
 
       <Form
         name="normal_login"
