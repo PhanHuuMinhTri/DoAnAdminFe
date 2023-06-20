@@ -1,43 +1,40 @@
 import React, { useEffect, useState, createContext } from "react";
 import { useTranslation } from "react-i18next";
-import { useOutlet, Link, useNavigate, useLocation } from "react-router-dom";
+import { useOutlet, useNavigate, useLocation } from "react-router-dom";
 import {
-  FileOutlined,
-  PieChartOutlined,
   UserOutlined,
-  DesktopOutlined,
+  AreaChartOutlined,
+  HighlightOutlined,
+  TranslationOutlined,
   TeamOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
-import { Breadcrumb, Layout, Menu, theme } from "antd";
+import { Layout, theme, Typography } from "antd";
 
 import axios from "axios";
 import { domainAPI } from "../../configs/dev";
 import { KEY_MENU_PRIVATE } from "../../constants/common";
 
-import { PublicLayoutStyle, HeaderStyled, MenuItem } from "./styled";
-const { Header, Content, Footer, Sider } = Layout;
+import { PublicLayoutStyle, MenuStyled, SiderStyled } from "./styled";
+const { Header, Content } = Layout;
 
-function getItem(label, key, icon, children) {
+const { Title } = Typography;
+
+function getItem(label, key, icon, link) {
   return {
     key,
     icon,
-    children,
     label,
+    link,
   };
 }
 const items = [
-  getItem("Option 1", "1", <PieChartOutlined />),
-  getItem("Option 2", "2", <DesktopOutlined />),
-  getItem("User", "sub1", <UserOutlined />, [
-    getItem("Tom", "3"),
-    getItem("Bill", "4"),
-    getItem("Alex", "5"),
-  ]),
-  getItem("Team", "sub2", <TeamOutlined />, [
-    getItem("Team 1", "6"),
-    getItem("Team 2", "8"),
-  ]),
-  getItem("Files", "9", <FileOutlined />),
+  getItem("Managerment User", "/user", <UserOutlined />),
+  getItem("Managerment Course", "/course", <AreaChartOutlined />),
+  getItem("Managerment Test", "/test", <HighlightOutlined />),
+  getItem("Managerment Test Kanji", "/test-kanji", <TranslationOutlined />),
+  getItem("Managerment Teacher", "/teacher", <TeamOutlined />),
+  getItem("Logouts", "/logout", <LogoutOutlined />),
 ];
 
 export const ProfileContext = createContext();
@@ -93,7 +90,7 @@ const PrivateLayout = () => {
     localStorage.removeItem("isLogin");
     localStorage.removeItem("idUser");
     localStorage.removeItem("name");
-    navigate("/login");
+    navigate("/");
   };
 
   const itemSelect = [
@@ -108,31 +105,42 @@ const PrivateLayout = () => {
   ];
 
   return (
-    <Layout
+    <PublicLayoutStyle
       style={{
         minHeight: "100vh",
       }}
     >
-      <Sider
-        collapsible
+      <SiderStyled
         collapsed={collapsed}
+        collapsible
         onCollapse={(value) => setCollapsed(value)}
       >
         <div className="demo-logo-vertical" />
-        <Menu
+        <MenuStyled
           theme="dark"
-          defaultSelectedKeys={["1"]}
+          defaultSelectedKeys={"/user"}
           mode="inline"
+          onSelect={(value) => {
+            if (value.key === "/logout") {
+              handleLogout();
+            } else {
+              navigate(value.key);
+            }
+          }}
           items={items}
         />
-      </Sider>
+      </SiderStyled>
       <Layout>
         <Header
           style={{
             padding: 0,
             background: colorBgContainer,
           }}
-        />
+        >
+          <Title level={3} style={{ textAlign: "center" }}>
+            ADMIN TRICHAN
+          </Title>
+        </Header>
         <Content
           style={{
             margin: "0 16px",
@@ -140,15 +148,8 @@ const PrivateLayout = () => {
         >
           {outlet}
         </Content>
-        <Footer
-          style={{
-            textAlign: "center",
-          }}
-        >
-          Ant Design ©2023 Created by Ant UED
-        </Footer>
       </Layout>
-    </Layout>
+    </PublicLayoutStyle>
   );
 };
 

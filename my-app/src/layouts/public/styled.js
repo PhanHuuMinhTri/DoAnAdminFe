@@ -1,32 +1,24 @@
 import styled from "styled-components";
-import { Layout, Row, Button } from "antd";
+import { Layout, Row, Button, Menu } from "antd";
+const { Sider } = Layout;
 
-export const PublicLayoutStyle = styled(Layout)`
-  width: 100%;
-  height: 100%;
-  background-color: #fff;
-  background-image: url("https://dungmori.com/assets/img/new_home/x-o-bg.svg");
+export const MenuStyled = styled(Menu)``;
 
-  .bottom-header {
-    height: 1px;
-    border: 1px solid #eaeaef;
+export const PublicLayoutStyle = styled(Layout)``;
+
+export const SiderStyled = styled(Sider)`
+  flex: 0 0 300px !important;
+  max-width: 300px !important;
+  min-width: 300px !important;
+  width: 300px !important;
+
+  .ant-layout-sider-trigger {
+    width: 300px !important;
   }
 
-  .body-content {
-    padding-top: 10px;
-  }
-
-  .footer {
-    width: 100%;
-    height: 200px;
-    background-image: url("https://dungmori.com/assets/img/new_home/footer-bg.jpg");
-
-    .col-info {
-      display: flex;
-      align-items: flex-start;
-      flex-direction: column;
-      justify-content: center;
-    }
+  .ant-menu-item {
+    height: 50px;
+    font-size: 18px;
   }
 `;
 
