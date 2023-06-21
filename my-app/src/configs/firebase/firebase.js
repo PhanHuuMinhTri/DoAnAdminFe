@@ -22,3 +22,10 @@ export const upload = async (file) => {
   const photoURL = await getDownloadURL(fileRef);
   return photoURL;
 };
+
+export const uploadImageCourse = async (file) => {
+  const fileRef = ref(storage, "courses/" + uuidv4() + ".png");
+  await uploadBytes(fileRef, file);
+  const photoURL = await getDownloadURL(fileRef);
+  return photoURL;
+};
