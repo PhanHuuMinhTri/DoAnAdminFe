@@ -6,4 +6,15 @@ export const ImageStyled = styled(Image)`
   height: 100px;
 `;
 
-export const RowStyled = styled(Row)``;
+export const RowStyled = styled(Row)`
+  .col-btn {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-end;
+
+    .ant-btn {
+      font-size: 16px;
+      font-weight: 700;
+    }
+  }
+`;

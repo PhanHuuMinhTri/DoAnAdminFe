@@ -38,6 +38,27 @@ const Teacher = React.lazy(
     }))
 );
 
+const Lesson = React.lazy(
+  async () =>
+    await import("../screens/privateScreens").then((module) => ({
+      default: module.Lesson,
+    }))
+);
+
+const AddCourse = React.lazy(
+  async () =>
+    await import("../screens/privateScreens").then((module) => ({
+      default: module.AddCourse,
+    }))
+);
+
+const AddLesson = React.lazy(
+  async () =>
+    await import("../screens/privateScreens").then((module) => ({
+      default: module.AddLesson,
+    }))
+);
+
 const _privateRoutes = [
   {
     element: (
@@ -65,6 +86,24 @@ const _privateRoutes = [
       {
         element: <Teacher />,
         path: "/teacher",
+      },
+      {
+        element: <Lesson />,
+        path: "course/:id/lesson",
+      },
+
+      {
+        element: <AddLesson />,
+        path: "course/:id/lesson/add",
+      },
+      {
+        element: <AddCourse />,
+        path: "course/add-course",
+      },
+
+      {
+        element: <AddCourse />,
+        path: "course/edit/:type",
       },
     ],
   },
