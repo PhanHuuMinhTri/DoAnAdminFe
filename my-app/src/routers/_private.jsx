@@ -59,6 +59,20 @@ const AddLesson = React.lazy(
     }))
 );
 
+const LessonQuestions = React.lazy(
+  async () =>
+    await import("../screens/privateScreens").then((module) => ({
+      default: module.LessonQuestions,
+    }))
+);
+
+const FlashCard = React.lazy(
+  async () =>
+    await import("../screens/privateScreens").then((module) => ({
+      default: module.FlashCard,
+    }))
+);
+
 const _privateRoutes = [
   {
     element: (
@@ -96,6 +110,21 @@ const _privateRoutes = [
         element: <AddLesson />,
         path: "course/:id/lesson/add",
       },
+      {
+        element: <AddLesson />,
+        path: "course/:id/lesson/edit/:type",
+      },
+
+      {
+        element: <LessonQuestions />,
+        path: "lesson/:id/questions",
+      },
+
+      {
+        element: <FlashCard />,
+        path: "lesson/:id/flash-card",
+      },
+
       {
         element: <AddCourse />,
         path: "course/add-course",

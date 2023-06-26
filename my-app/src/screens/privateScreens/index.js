@@ -6,3 +6,6 @@ export { default as User } from "./managermentUser/User";
 export { default as Lesson } from "./managermentLesson/Lesson";
 export { default as AddCourse } from "./addCourse/AddCourse";
 export { default as AddLesson } from "./addLesson/AddLesson";
+export { default as LessonQuestions } from "./managementQuestion/Question";
+export { default as LessonOptions } from "./managementOption/Options";
+export { default as FlashCard } from "./managermentFlashCard/FlashCard";
