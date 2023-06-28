@@ -17,9 +17,4 @@ export const RowStyled = styled(Row)`
       font-weight: 700;
     }
   }
-
-  .ant-image-img {
-    width: 200px;
-    height: 100px;
-  }
 `;

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Image, Row } from "antd";
+import { Image, Row, Modal } from "antd";
 
 export const ImageStyled = styled(Image)`
   width: 100px;
@@ -17,9 +17,17 @@ export const RowStyled = styled(Row)`
       font-weight: 700;
     }
   }
+`;
 
-  .ant-image-img {
-    width: 200px;
-    height: 100px;
+export const ModalStyled = styled(Modal)`
+  .ant-form-item-explain-error {
+    color: red;
+  }
+  .ant-space-item {
+    width: 100%;
+
+    .ant-input {
+      margin-right: 10px;
+    }
   }
 `;

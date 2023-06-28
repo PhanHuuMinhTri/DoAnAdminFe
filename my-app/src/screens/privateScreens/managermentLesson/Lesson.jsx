@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Col, Table, Typography, Button } from "antd";
+import { Col, Table, Typography, Button, message } from "antd";
 import axios from "axios";
 
-import { EditOutlined, FileSearchOutlined } from "@ant-design/icons";
+import {
+  EditOutlined,
+  FileSearchOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
 
 import { domainAPI } from "../../../configs/dev";
 
@@ -19,6 +23,15 @@ const Lesson = () => {
   const getListLesson = async () => {
     const res = await axios.get(`${domainAPI}/lesson/course/${id}`);
     setListLesson(res.data);
+  };
+
+  const deleteLesson = async (id) => {
+    try {
+      await axios.delete(`${domainAPI}/lesson/delete/${id}`);
+      message.success("Delete lesson success!!!");
+    } catch (error) {
+      message.error("Delete lesson error!!!");
+    }
   };
 
   useEffect(() => {
@@ -60,7 +73,28 @@ const Lesson = () => {
       key: "edit",
       align: "center",
       render: (value) => (
-        <EditOutlined style={{ fontSize: "20px", cursor: "pointer" }} />
+        <EditOutlined
+          onClick={() => {
+            navigate(`/course/${id}/lesson/edit/${value}`);
+          }}
+          style={{ fontSize: "20px", cursor: "pointer" }}
+        />
+      ),
+    },
+
+    {
+      title: "Delete",
+      dataIndex: "idLesson",
+      key: "edit",
+      align: "center",
+      render: (value) => (
+        <DeleteOutlined
+          onClick={async () => {
+            await deleteLesson(value);
+            await getListLesson();
+          }}
+          style={{ fontSize: "20px", cursor: "pointer" }}
+        />
       ),
     },
 
@@ -70,7 +104,12 @@ const Lesson = () => {
       key: "lesson",
       align: "center",
       render: (value) => (
-        <FileSearchOutlined style={{ fontSize: "20px", cursor: "pointer" }} />
+        <FileSearchOutlined
+          onClick={() => {
+            navigate(`/lesson/${value}/questions`);
+          }}
+          style={{ fontSize: "20px", cursor: "pointer" }}
+        />
       ),
     },
 
@@ -80,7 +119,12 @@ const Lesson = () => {
       key: "lesson",
       align: "center",
       render: (value) => (
-        <FileSearchOutlined style={{ fontSize: "20px", cursor: "pointer" }} />
+        <FileSearchOutlined
+          onClick={() => {
+            navigate(`/lesson/${value}/flash-card`);
+          }}
+          style={{ fontSize: "20px", cursor: "pointer" }}
+        />
       ),
     },
   ];

@@ -21,3 +21,8 @@ export const KEY_MENU_PUBLIC = {
   COURSE: "course",
   TEACHER: "teacher",
 };
+
+export const TYPE_SHOW = {
+  ADD_QUESTION: "ADD_QUESTION",
+  ADD_OPTIONS: "ADD_OPTIONS",
+};

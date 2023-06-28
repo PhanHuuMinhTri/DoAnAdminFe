@@ -29,3 +29,10 @@ export const uploadImageCourse = async (file) => {
   const photoURL = await getDownloadURL(fileRef);
   return photoURL;
 };
+
+export const uploadVideoLesson = async (file) => {
+  const fileRef = ref(storage, "videos/" + uuidv4() + ".mp4");
+  await uploadBytes(fileRef, file);
+  const videoUrl = await getDownloadURL(fileRef);
+  return videoUrl;
+};

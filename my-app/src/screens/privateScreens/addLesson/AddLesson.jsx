@@ -1,30 +1,36 @@
 import React, { useEffect, useState } from "react";
-import { Col } from "antd";
 import {
   Button,
+  Col,
   Form,
-  Input,
   Select,
   Spin,
-  Image,
   Upload,
   message,
+  Typography,
 } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
-import DefaultAvatar from "../../../assets/default-image.jpg";
 import axios from "axios";
 import { domainAPI } from "../../../configs/dev";
-import { uploadImageCourse } from "../../../configs/firebase/firebase";
+import { uploadVideoLesson } from "../../../configs/firebase/firebase";
 import TitleComponent from "../../../components/title/Title";
-import { UserOutlined, CameraOutlined } from "@ant-design/icons";
-
+import { UploadOutlined } from "@ant-design/icons";
+import { TYPE_LESSON } from "../../../constants/common";
 import { RowStyled } from "./styled";
+
+const { Text } = Typography;
+
 const AddLesson = () => {
-  const { type } = useParams();
+  const { id, type } = useParams();
+
   const navigate = useNavigate();
   const [form] = Form.useForm();
+
   const [loading, setLoading] = useState(false);
-  const [teacher, setTeacher] = useState([]);
+  const [listLesson, setListLesson] = useState([]);
+  const [dataEdit, setDataEdit] = useState({});
+
+  console.log("dataEdit", dataEdit);
 
   const [initValue, setInitValue] = useState({});
 
@@ -32,19 +38,13 @@ const AddLesson = () => {
     form.setFieldsValue(initValue);
   }, [form, initValue]);
 
-  const getCourseInfo = async () => {
-    const res = await axios.get(`${domainAPI}/course/${type}`);
-    setInitValue(res.data);
-    form.setFieldValue(res.data);
-  };
-
-  const [fileImage, setFileImage] = useState(null);
-
   const handleUpload = async (file) => {
     setLoading(true);
     try {
-      const photoURL = await uploadImageCourse(file);
-      return photoURL;
+      const videoUrl = await uploadVideoLesson(file);
+      setLoading(false);
+
+      return videoUrl;
     } catch (error) {
       console.error("Lỗi tải lên:", error);
       setLoading(false);
@@ -52,144 +52,139 @@ const AddLesson = () => {
     }
   };
 
-  const getListTeacher = async () => {
-    const res = await axios.get(`${domainAPI}/teacher`);
-    setTeacher(res.data);
+  const getListLesson = async () => {
+    const res = await axios.get(`${domainAPI}/lesson/course/${id}`);
+    setListLesson(res.data);
   };
 
-  const options = teacher.map((item) => ({
-    label: item?.name,
-    value: item?.idTeacher,
-  }));
+  const getLessonInfo = async () => {
+    const res = await axios.get(`${domainAPI}/lesson/${type}`);
+    setInitValue({ type: res.data.type });
+    setDataEdit(res.data);
+  };
 
   useEffect(() => {
-    getListTeacher();
+    getListLesson();
 
     if (type) {
-      getCourseInfo();
+      getLessonInfo();
     }
   }, []);
 
   const onFinish = async (value) => {
+    console.log("value", value);
     try {
-      const url = fileImage
-        ? await handleUpload(fileImage)
-        : initValue.imageCourse;
+      let url;
+      if (value?.videoUrl) {
+        url = await handleUpload(value.videoUrl[0]?.originFileObj);
+      } else {
+        url = dataEdit.videoUrl;
+      }
 
       const data = {
         ...value,
-        imageCourse: url,
-        idCourse: initValue?.idCourse,
+        videoUrl: url,
+        idCourse: id,
+        indexLesson: listLesson.length + 1,
       };
 
       if (type) {
-        await axios.post(`${domainAPI}/course/edit`, data);
-        message.success("Edit course success");
+        const dataEditLesson = {
+          ...data,
+          idLesson: type,
+          indexLesson: dataEdit.indexLesson,
+        };
+
+        console.log("dataEdit", dataEditLesson);
+        await axios.post(`${domainAPI}/lesson/edit`, dataEditLesson);
+        message.success("Edit lesson success");
       } else {
-        await axios.post(`${domainAPI}/course/add`, data);
-        message.success("Add course success");
+        await axios.post(`${domainAPI}/lesson/add`, data);
+        message.success("Add lesson success");
       }
 
-      navigate("/course");
       setLoading(false);
+      navigate(`/course/${id}/lesson`);
     } catch (error) {
-      message.error("Add course fail");
+      message.error("Add lesson fail");
       setLoading(false);
     }
   };
 
+  const options = [
+    { label: "Grammar", value: TYPE_LESSON.GRAMMAR },
+    { label: "Kanji", value: TYPE_LESSON.KANJI },
+    { label: "Vocabulary", value: TYPE_LESSON.VOCABULARY },
+  ];
+
   return (
     <RowStyled>
-      <TitleComponent text={"Add Course"} />
+      <TitleComponent text={type ? "Edit Lesson" : "Add Lesson"} />
       <Col span={24}>
-        <Form
-          layout="vertical"
-          name="control-hooks"
-          form={form}
-          onFinish={onFinish}
-          initialValues={initValue}
-          style={{ maxWidth: "100%" }}
-        >
-          <Form.Item
-            name="nameCourse"
-            label="Name course"
-            rules={[{ required: true }]}
+        <Spin spinning={loading}>
+          <Form
+            layout="vertical"
+            name="control-hooks"
+            form={form}
+            onFinish={onFinish}
+            style={{ maxWidth: "100%" }}
           >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="numberLession"
-            label="Numbers of lesson"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="numberTest"
-            label="Numbers of test"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="description"
-            label="Description"
-            rules={[{ required: true }]}
-          >
-            <Input.TextArea />
-          </Form.Item>
+            <Form.Item
+              label="Type lesson"
+              name="type"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng chọn loại bài học",
+                },
+              ]}
+            >
+              <Select options={options} />
+            </Form.Item>
 
-          <Form.Item label="Image">
-            <div className="field-avatar">
-              <Spin spinning={loading}>
-                <Image
-                  className="avatar"
-                  shape="square"
-                  src={
-                    type
-                      ? fileImage
-                        ? URL?.createObjectURL(fileImage)
-                        : initValue?.imageCourse
-                      : fileImage
-                      ? URL?.createObjectURL(fileImage)
-                      : DefaultAvatar
-                  }
-                  size={200}
-                  icon={<UserOutlined />}
-                />
-              </Spin>
+            {type && (
+              <Text>
+                Link video: <a href={dataEdit?.videoUrl}>See video</a>
+              </Text>
+            )}
 
-              <Upload
-                listType="picture-circle"
-                className="upload"
-                showUploadList={false}
-                onPreview={() => false}
-                accept="image/png, image/jpeg"
-                beforeUpload={() => false}
-                onChange={({ file }) => {
-                  if (file) {
-                    setFileImage(file);
-                  }
-                }}
-              >
-                <CameraOutlined />
-              </Upload>
-            </div>
-          </Form.Item>
-          <Form.Item
-            name="idTeacher"
-            label="Teacher"
-            rules={[{ required: true }]}
-          >
-            <Select placeholder="Select teacher" allowClear options={options} />
-          </Form.Item>
+            <Form.Item
+              name="videoUrl"
+              label="Video"
+              valuePropName="fileList"
+              getValueFromEvent={(e) => {
+                if (Array.isArray(e)) {
+                  return e;
+                }
 
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              {type ? "Edit Course" : "Add Course"}
-            </Button>
-          </Form.Item>
-        </Form>
+                return e && e.fileList;
+              }}
+              rules={[
+                {
+                  required: type ? false : true,
+                  message: "Vui lòng chọn video để tải lên!",
+                },
+              ]}
+            >
+              <Upload.Dragger name="files" beforeUpload={() => false}>
+                <p className="ant-upload-drag-icon">
+                  <UploadOutlined />
+                </p>
+                <p className="ant-upload-text">
+                  {type
+                    ? "Thay đổi video khác"
+                    : "Nhấp hoặc kéo thả video vào đây để tải lên "}
+                </p>
+              </Upload.Dragger>
+            </Form.Item>
+
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                {type ? "Edit lesson" : "Add lesson"}
+              </Button>
+            </Form.Item>
+          </Form>
+        </Spin>
       </Col>
     </RowStyled>
   );
