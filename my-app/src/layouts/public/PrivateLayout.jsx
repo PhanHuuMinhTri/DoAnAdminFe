@@ -34,7 +34,7 @@ const items = [
   getItem("Managerment Test", "/test", <HighlightOutlined />),
   getItem("Managerment Test Kanji", "/test-kanji", <TranslationOutlined />),
   getItem("Managerment Teacher", "/teacher", <TeamOutlined />),
-  getItem("Logouts", "/logout", <LogoutOutlined />),
+  getItem("Logout", "/logout", <LogoutOutlined />),
 ];
 
 export const ProfileContext = createContext();
@@ -42,49 +42,12 @@ export const ProfileContext = createContext();
 const PrivateLayout = () => {
   const outlet = useOutlet();
   const navigate = useNavigate();
-  const [profile, setProfile] = useState();
-
+  const [defaultMenu, setDefaultMenu] = useState("");
   const location = useLocation();
-
-  const { t, i18n } = useTranslation();
-
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-
-  const getKeyByPath = () => {
-    const listKey = Object.values(KEY_MENU_PRIVATE);
-    const listPath = location.pathname.split("/");
-    const removeNullPath = listPath.filter((item) => item);
-
-    const findIndex = listKey.findIndex((item) => item === removeNullPath[0]);
-
-    if (findIndex >= 0) {
-      return listKey[findIndex];
-    } else return "";
-  };
-
-  const handleSetProfile = (value) => {
-    setProfile(value);
-  };
-
-  const handleLanguageChange = (value) => {
-    localStorage.setItem("language", value);
-    i18n.changeLanguage(value);
-  };
-
-  const getProfile = async () => {
-    const res = await axios.get(
-      `${domainAPI}/auth/profile/${localStorage.getItem("idUser")}`
-    );
-
-    setProfile(res.data);
-  };
-
-  useEffect(() => {
-    // getProfile();
-  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("isLogin");
@@ -92,17 +55,6 @@ const PrivateLayout = () => {
     localStorage.removeItem("name");
     navigate("/");
   };
-
-  const itemSelect = [
-    {
-      label: "VI",
-      value: "en",
-    },
-    {
-      label: "JP",
-      value: "jp",
-    },
-  ];
 
   return (
     <PublicLayoutStyle
@@ -118,7 +70,7 @@ const PrivateLayout = () => {
         <div className="demo-logo-vertical" />
         <MenuStyled
           theme="dark"
-          defaultSelectedKeys={"/user"}
+          defaultSelectedKeys={defaultMenu}
           mode="inline"
           onSelect={(value) => {
             if (value.key === "/logout") {

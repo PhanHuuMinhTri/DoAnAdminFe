@@ -135,6 +135,19 @@ const Course = () => {
         />
       ),
     },
+
+    {
+      title: "Managerment Progress",
+      dataIndex: "idCourse",
+      key: "progress",
+      align: "center",
+      render: (value) => (
+        <FileSearchOutlined
+          onClick={() => navigate(`${value}/progress`)}
+          style={{ fontSize: "20px", cursor: "pointer" }}
+        />
+      ),
+    },
   ];
 
   return (
