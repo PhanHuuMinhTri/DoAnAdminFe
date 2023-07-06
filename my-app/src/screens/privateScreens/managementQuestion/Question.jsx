@@ -106,10 +106,12 @@ const Question = () => {
       dataIndex: "idQuestion",
       key: "edit",
       align: "center",
-      render: (value) => (
+      render: (value, row) => (
         <EditOutlined
           onClick={() => {
-            getInfoQuestion(value);
+            setInitValue(row);
+            setShow(TYPE_SHOW.ADD_QUESTION);
+            // getInfoQuestion(value);
           }}
           style={{ fontSize: "20px", cursor: "pointer" }}
         />
@@ -164,7 +166,8 @@ const Question = () => {
 
   const onFinish = async (value) => {
     try {
-      if (initValue?.quesiton) {
+      console.log("init value", initValue);
+      if (initValue?.question) {
         await axios.post(`${domainAPI}/question/edit`, {
           ...value,
           idQuestion: initValue?.idQuestion,
@@ -226,7 +229,7 @@ const Question = () => {
         onCancel={onCancel}
         open={show === TYPE_SHOW.ADD_QUESTION}
         footer={false}
-        title="Add question"
+        title={initValue?.question ? "Edit question" : "Add question"}
       >
         <Form
           layout="vertical"
@@ -254,7 +257,7 @@ const Question = () => {
               Cancel
             </Button>
             <Button type="primary" htmlType="submit">
-              Add question
+              {initValue?.question ? "Edit question" : "Add question"}
             </Button>
           </Form.Item>
         </Form>

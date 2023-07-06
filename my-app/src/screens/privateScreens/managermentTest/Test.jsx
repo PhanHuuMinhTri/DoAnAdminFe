@@ -21,7 +21,7 @@ import {
 
 import { domainAPI } from "../../../configs/dev";
 
-import { RowStyled } from "./styled";
+import { RowStyled, ButtonStyled } from "./styled";
 
 const { Title } = Typography;
 
@@ -189,10 +189,9 @@ const Test = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button onClick={onCancel}>Cancel</Button>
-          </Form.Item>
-
-          <Form.Item>
+            <ButtonStyled onClick={onCancel} className="btn-left">
+              Cancel
+            </ButtonStyled>
             <Button type="primary" htmlType="submit">
               Submit
             </Button>

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Image, Row } from "antd";
+import { Image, Row, Button } from "antd";
 
 export const ImageStyled = styled(Image)`
   width: 100px;
@@ -22,4 +22,8 @@ export const RowStyled = styled(Row)`
     width: 200px;
     height: 100px;
   }
+`;
+
+export const ButtonStyled = styled(Button)`
+  margin-right: 20px;
 `;

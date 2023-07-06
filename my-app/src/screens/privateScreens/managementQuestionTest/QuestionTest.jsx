@@ -46,18 +46,20 @@ const QuestionTest = () => {
   }, [form, initValue]);
 
   const getListQuestion = async () => {
-    const res = await axios.get(`${domainAPI}/question/lesson-question/${id}`);
+    const res = await axios.get(
+      `${domainAPI}/question-test/test-question/${id}`
+    );
     setListQuestion(res.data);
   };
 
   const getInfoQuestion = async (id) => {
-    const res = await axios.get(`${domainAPI}/question/${id}`);
-    setInitValue({ question: res.data[0].question });
+    const res = await axios.get(`${domainAPI}/question-test/${id}`);
+    setInitValue({ questionText: res.data[0].questionText });
     setShow(TYPE_SHOW.ADD_QUESTION);
   };
 
   const getListOptions = async (id) => {
-    const res = await axios.get(`${domainAPI}/question/${id}/options`);
+    const res = await axios.get(`${domainAPI}/question-test/${id}/options`);
     const arrayInitValue = res.data.map((item) => ({
       idOption: item.idOption,
       optionText: item.optionText,
@@ -72,7 +74,7 @@ const QuestionTest = () => {
 
   const deleteQuestion = async (id) => {
     try {
-      await axios.delete(`${domainAPI}/question/delete/${id}`);
+      await axios.delete(`${domainAPI}/question-test/delete/${id}`);
       message.success("Delete question success!!!");
     } catch (error) {
       message.error("Delete question error!!!");
@@ -94,7 +96,7 @@ const QuestionTest = () => {
 
     {
       title: "Question",
-      dataIndex: "question",
+      dataIndex: "questionText",
       key: "question",
       align: "center",
     },
@@ -104,10 +106,11 @@ const QuestionTest = () => {
       dataIndex: "idQuestion",
       key: "edit",
       align: "center",
-      render: (value) => (
+      render: (value, row) => (
         <EditOutlined
           onClick={() => {
-            getInfoQuestion(value);
+            setInitValue(row);
+            setShow(TYPE_SHOW.ADD_QUESTION);
           }}
           style={{ fontSize: "20px", cursor: "pointer" }}
         />
@@ -162,16 +165,17 @@ const QuestionTest = () => {
 
   const onFinish = async (value) => {
     try {
-      if (initValue?.quesiton) {
-        await axios.post(`${domainAPI}/question/edit`, {
+      console.log("initValue", initValue);
+      if (initValue?.questionText) {
+        await axios.post(`${domainAPI}/question-test/edit`, {
           ...value,
           idQuestion: initValue?.idQuestion,
         });
         await getListQuestion();
       } else {
-        await axios.post(`${domainAPI}/question/add`, {
+        await axios.post(`${domainAPI}/question-test/add`, {
           ...value,
-          idLesson: id,
+          idTest: id,
         });
         await getListQuestion();
       }
@@ -186,7 +190,7 @@ const QuestionTest = () => {
 
   const onFinishUploadOption = async (value) => {
     await axios.post(
-      `${domainAPI}/question/${questionActive}/options/upload`,
+      `${domainAPI}/question-test/${questionActive}/options/upload`,
       value
     );
     message.success("Update option success!!!");
@@ -226,7 +230,7 @@ const QuestionTest = () => {
         onCancel={onCancel}
         open={show === TYPE_SHOW.ADD_QUESTION}
         footer={false}
-        title="Add question"
+        title={initValue?.questionText ? "Edit question" : "Add question"}
       >
         <Form
           layout="vertical"
@@ -238,7 +242,7 @@ const QuestionTest = () => {
         >
           <Form.Item
             label="Question"
-            name="question"
+            name="questionText"
             rules={[
               {
                 required: true,
@@ -254,7 +258,7 @@ const QuestionTest = () => {
               Cancel
             </Button>
             <Button type="primary" htmlType="submit">
-              Add question
+              {initValue?.questionText ? "Edit question" : "Add question"}
             </Button>
           </Form.Item>
         </Form>

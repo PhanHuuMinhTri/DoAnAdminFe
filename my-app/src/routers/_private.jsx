@@ -31,6 +31,13 @@ const TestKanji = React.lazy(
     }))
 );
 
+const TestKanjiOption = React.lazy(
+  async () =>
+    await import("../screens/privateScreens").then((module) => ({
+      default: module.TestKanjiOption,
+    }))
+);
+
 const Teacher = React.lazy(
   async () =>
     await import("../screens/privateScreens").then((module) => ({
@@ -110,6 +117,11 @@ const _privateRoutes = [
       {
         element: <TestKanji />,
         path: "/test-kanji",
+      },
+
+      {
+        element: <TestKanjiOption />,
+        path: "/test-kanji/:id/kanji",
       },
       {
         element: <Teacher />,
