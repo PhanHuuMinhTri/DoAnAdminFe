@@ -73,6 +73,13 @@ const LessonQuestions = React.lazy(
     }))
 );
 
+const TestQuestions = React.lazy(
+  async () =>
+    await import("../screens/privateScreens").then((module) => ({
+      default: module.TestQuestions,
+    }))
+);
+
 const FlashCard = React.lazy(
   async () =>
     await import("../screens/privateScreens").then((module) => ({
@@ -130,6 +137,11 @@ const _privateRoutes = [
       {
         element: <LessonQuestions />,
         path: "lesson/:id/questions",
+      },
+
+      {
+        element: <TestQuestions />,
+        path: "test/:id/questions",
       },
 
       {
