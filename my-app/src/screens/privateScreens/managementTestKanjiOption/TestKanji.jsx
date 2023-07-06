@@ -4,20 +4,15 @@ import {
   Table,
   Typography,
   message,
-  Image,
   Button,
   Form,
   Modal,
   Input,
 } from "antd";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-import {
-  DeleteOutlined,
-  EditOutlined,
-  FileSearchOutlined,
-} from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 import { domainAPI } from "../../../configs/dev";
 
@@ -25,25 +20,29 @@ import { RowStyled, ButtonStyled } from "./styled";
 
 const { Title } = Typography;
 
-const Test = () => {
+const TestKanjiOption = () => {
   const [listTest, setListTest] = useState([]);
+
   const [isShowModal, setShowModal] = useState(false);
   const [form] = Form.useForm();
   const [testActive, setTestActive] = useState(null);
-  const navigate = useNavigate();
+
+  const { id } = useParams();
 
   useEffect(() => {
     form.setFieldsValue(testActive);
   }, [form, testActive]);
 
   const getListTest = async () => {
-    const res = await axios.get(`${domainAPI}/write-kanji/practice-kanji`);
+    const res = await axios.get(
+      `${domainAPI}/write-kanji/practice-kanji/${id}`
+    );
     setListTest(res.data);
   };
 
   const deleteTest = async (id) => {
     try {
-      await axios.delete(`${domainAPI}/write-kanji/delete/${id}`);
+      await axios.delete(`${domainAPI}/write-kanji/kanji/delete/${id}`);
       message.success("Delete testsuccess!!!");
     } catch (error) {
       message.error("Delete test error!!!");
@@ -61,7 +60,7 @@ const Test = () => {
       try {
         const payload = { ...value, id: testActive?.id };
 
-        await axios.post(`${domainAPI}/write-kanji/edit`, payload);
+        await axios.post(`${domainAPI}/write-kanji/kanji/edit`, payload);
         message.success("Edit test sucess!!!");
         await getListTest();
       } catch (error) {
@@ -70,7 +69,11 @@ const Test = () => {
       }
     } else {
       try {
-        await axios.post(`${domainAPI}/write-kanji/add`, value);
+        const payload = {
+          id: id,
+          ...value,
+        };
+        await axios.post(`${domainAPI}/write-kanji/kanji/add`, payload);
         message.success("Add test sucess!!!");
         await getListTest();
       } catch (error) {
@@ -94,17 +97,11 @@ const Test = () => {
     },
 
     {
-      title: "Name Test",
-      dataIndex: "namePractice",
-      key: "namePractice",
+      title: "Kanji",
+      dataIndex: "kanji",
+      key: "kanji",
       width: "100px",
       align: "center",
-    },
-
-    {
-      title: "Level",
-      dataIndex: "level",
-      key: "level",
     },
 
     {
@@ -138,27 +135,12 @@ const Test = () => {
         />
       ),
     },
-
-    {
-      title: "Management Kanji Test",
-      dataIndex: "id",
-      key: "edit",
-      align: "center",
-      render: (value) => (
-        <FileSearchOutlined
-          onClick={async () => {
-            navigate(`/test-kanji/${value}/kanji`);
-          }}
-          style={{ fontSize: "20px", cursor: "pointer" }}
-        />
-      ),
-    },
   ];
 
   return (
     <RowStyled>
       <Col span={24}>
-        <Title style={{ textAlign: "center" }}>Managerment Test Kanji</Title>
+        <Title style={{ textAlign: "center" }}>Managerment Kanji</Title>
       </Col>
 
       <Col span={24} className="col-btn">
@@ -167,7 +149,7 @@ const Test = () => {
             setShowModal(true);
           }}
         >
-          Add Test Kanji
+          Add Kanji
         </Button>
       </Col>
       <Col span={24}>
@@ -178,13 +160,10 @@ const Test = () => {
         footer={false}
         onCancel={onCancel}
         open={isShowModal}
-        title={!testActive ? "Add Test" : "Edit Test"}
+        title={!testActive ? "Add Kanji" : "Edit Kanji"}
       >
         <Form layout="vertical" form={form} onFinish={onFinish}>
-          <Form.Item name="level" label="Level">
-            <Input />
-          </Form.Item>
-          <Form.Item name="namePractice" label="Name Test">
+          <Form.Item name="kanji" label="Kanji">
             <Input />
           </Form.Item>
 
@@ -202,4 +181,4 @@ const Test = () => {
   );
 };
 
-export default Test;
+export default TestKanjiOption;

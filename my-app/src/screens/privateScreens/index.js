@@ -11,3 +11,4 @@ export { default as LessonQuestions } from "./managementQuestion/Question";
 export { default as LessonOptions } from "./managementOption/Options";
 export { default as FlashCard } from "./managermentFlashCard/FlashCard";
 export { default as Progress } from "./managementProgress/Progress";
+export { default as TestKanjiOption } from "./managementTestKanjiOption/TestKanji";
