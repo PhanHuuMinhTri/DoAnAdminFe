@@ -45,6 +45,13 @@ const Lesson = React.lazy(
     }))
 );
 
+const Progress = React.lazy(
+  async () =>
+    await import("../screens/privateScreens").then((module) => ({
+      default: module.Progress,
+    }))
+);
+
 const AddCourse = React.lazy(
   async () =>
     await import("../screens/privateScreens").then((module) => ({
@@ -104,6 +111,11 @@ const _privateRoutes = [
       {
         element: <Lesson />,
         path: "course/:id/lesson",
+      },
+
+      {
+        element: <Progress />,
+        path: "course/:id/progress",
       },
 
       {
