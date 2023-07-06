@@ -30,8 +30,6 @@ const AddLesson = () => {
   const [listLesson, setListLesson] = useState([]);
   const [dataEdit, setDataEdit] = useState({});
 
-  console.log("dataEdit", dataEdit);
-
   const [initValue, setInitValue] = useState({});
 
   useEffect(() => {
@@ -72,7 +70,6 @@ const AddLesson = () => {
   }, []);
 
   const onFinish = async (value) => {
-    console.log("value", value);
     try {
       let url;
       if (value?.videoUrl) {
@@ -94,8 +91,6 @@ const AddLesson = () => {
           idLesson: type,
           indexLesson: dataEdit.indexLesson,
         };
-
-        console.log("dataEdit", dataEditLesson);
         await axios.post(`${domainAPI}/lesson/edit`, dataEditLesson);
         message.success("Edit lesson success");
       } else {
