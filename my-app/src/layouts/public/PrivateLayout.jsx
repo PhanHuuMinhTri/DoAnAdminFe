@@ -50,7 +50,7 @@ const PrivateLayout = () => {
   } = theme.useToken();
 
   const handleLogout = () => {
-    localStorage.removeItem("isLogin");
+    localStorage.removeItem("isLoginAdmin");
     localStorage.removeItem("idUser");
     localStorage.removeItem("name");
     navigate("/");

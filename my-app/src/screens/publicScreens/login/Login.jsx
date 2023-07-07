@@ -15,11 +15,11 @@ const LoginScreen = () => {
   const navigate = useNavigate();
   const onFinish = async (values) => {
     try {
-      const res = await axios.post(`${domainAPI}/auth/login`, { values });
-      localStorage.setItem("isLogin", true);
+      const res = await axios.post(`${domainAPI}/auth/login-admin`, { values });
+      localStorage.setItem("isLoginAdmin", true);
       localStorage.setItem("idUser", res.data.idUser);
       localStorage.setItem("name", res.data.name);
-      navigate("/dashboard");
+      navigate("/user");
     } catch (error) {
       console.log("error", error);
       notification.error({
