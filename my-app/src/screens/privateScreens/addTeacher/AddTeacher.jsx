@@ -14,28 +14,29 @@ import { useNavigate, useParams } from "react-router-dom";
 import DefaultAvatar from "../../../assets/default-image.jpg";
 import axios from "axios";
 import { domainAPI } from "../../../configs/dev";
-import { uploadImageCourse } from "../../../configs/firebase/firebase";
+import { uploadImageTeacher } from "../../../configs/firebase/firebase";
 import TitleComponent from "../../../components/title/Title";
 import { UserOutlined, CameraOutlined } from "@ant-design/icons";
 
 import { RowStyled } from "./styled";
-const AddCourse = () => {
-  const { type } = useParams();
+const AddTeacher = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const [teacher, setTeacher] = useState([]);
 
   const [initValue, setInitValue] = useState({});
+
+  console.log("init", initValue);
 
   useEffect(() => {
     form.setFieldsValue(initValue);
   }, [form, initValue]);
 
-  const getCourseInfo = async () => {
-    const res = await axios.get(`${domainAPI}/course/${type}`);
-    setInitValue(res.data);
-    form.setFieldValue(res.data);
+  const getTeacherInfo = async () => {
+    const res = await axios.get(`${domainAPI}/teacher/${id}`);
+    setInitValue(res.data[0]);
+    form.setFieldValue(res.data[0]);
   };
 
   const [fileImage, setFileImage] = useState(null);
@@ -43,7 +44,7 @@ const AddCourse = () => {
   const handleUpload = async (file) => {
     setLoading(true);
     try {
-      const photoURL = await uploadImageCourse(file);
+      const photoURL = await uploadImageTeacher(file);
       return photoURL;
     } catch (error) {
       console.error("Lỗi tải lên:", error);
@@ -52,55 +53,43 @@ const AddCourse = () => {
     }
   };
 
-  const getListTeacher = async () => {
-    const res = await axios.get(`${domainAPI}/teacher`);
-    setTeacher(res.data);
-  };
-
-  const options = teacher.map((item) => ({
-    label: item?.name,
-    value: item?.idTeacher,
-  }));
-
   useEffect(() => {
-    getListTeacher();
-
-    if (type) {
-      getCourseInfo();
+    if (id) {
+      getTeacherInfo();
     }
-  }, []);
+  }, [id]);
 
   const onFinish = async (value) => {
     try {
       const url = fileImage
         ? await handleUpload(fileImage)
-        : initValue.imageCourse;
+        : initValue?.imageCourse;
 
       const data = {
         ...value,
-        imageCourse: url,
-        idCourse: initValue?.idCourse,
+        avatar: url,
+        idTeacher: initValue?.idTeacher,
       };
 
-      if (type) {
-        await axios.post(`${domainAPI}/course/edit`, data);
-        message.success("Edit course success");
+      if (id) {
+        await axios.post(`${domainAPI}/teacher/edit`, data);
+        message.success("Edit teacher success");
       } else {
-        await axios.post(`${domainAPI}/course/add`, data);
-        message.success("Add course success");
+        await axios.post(`${domainAPI}/teacher/add`, data);
+        message.success("Add teacher success");
       }
 
-      navigate("/course");
+      navigate("/teacher");
       setLoading(false);
     } catch (error) {
-      message.error("Add course fail");
+      message.error("Add teacher fail");
       setLoading(false);
     }
   };
 
   return (
     <RowStyled>
-      <TitleComponent text={type ? "Edit Course" : "Add Course"} />
+      <TitleComponent text={id ? "Edit Teacher" : "Add Teacher"} />
       <Col span={24}>
         <Form
           layout="vertical"
@@ -110,46 +99,31 @@ const AddCourse = () => {
           initialValues={initValue}
           style={{ maxWidth: "100%" }}
         >
-          <Form.Item
-            name="nameCourse"
-            label="Name course"
-            rules={[{ required: true }]}
-          >
+          <Form.Item name="name" label="Name" rules={[{ required: true }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item name="phone" label="Phone" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
           <Form.Item
-            name="numberLession"
-            label="Numbers of lesson"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="numberTest"
-            label="Numbers of test"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="description"
+            name="descriptionTeacher"
             label="Description"
             rules={[{ required: true }]}
           >
             <Input.TextArea />
           </Form.Item>
 
-          <Form.Item label="Image">
+          <Form.Item label="Avatar">
             <div className="field-avatar">
               <Spin spinning={loading}>
                 <Image
                   className="avatar"
                   shape="square"
                   src={
-                    type
+                    id
                       ? fileImage
                         ? URL?.createObjectURL(fileImage)
-                        : initValue?.imageCourse
+                        : initValue?.avatar
                       : fileImage
                       ? URL?.createObjectURL(fileImage)
                       : DefaultAvatar
@@ -176,17 +150,9 @@ const AddCourse = () => {
               </Upload>
             </div>
           </Form.Item>
-          <Form.Item
-            name="idTeacher"
-            label="Teacher"
-            rules={[{ required: true }]}
-          >
-            <Select placeholder="Select teacher" allowClear options={options} />
-          </Form.Item>
-
           <Form.Item>
             <Button type="primary" htmlType="submit">
-              {type ? "Edit Course" : "Add Course"}
+              {id ? "Edit Teacher" : "Add Teacher"}
             </Button>
           </Form.Item>
         </Form>
@@ -195,4 +161,4 @@ const AddCourse = () => {
   );
 };
 
-export default AddCourse;
+export default AddTeacher;

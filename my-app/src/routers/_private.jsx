@@ -73,6 +73,13 @@ const AddLesson = React.lazy(
     }))
 );
 
+const AddTeacher = React.lazy(
+  async () =>
+    await import("../screens/privateScreens").then((module) => ({
+      default: module.AddTeacher,
+    }))
+);
+
 const LessonQuestions = React.lazy(
   async () =>
     await import("../screens/privateScreens").then((module) => ({
@@ -144,6 +151,15 @@ const _privateRoutes = [
       {
         element: <AddLesson />,
         path: "course/:id/lesson/edit/:type",
+      },
+
+      {
+        element: <AddTeacher />,
+        path: "teacher/add",
+      },
+      {
+        element: <AddTeacher />,
+        path: "teacher/:id/edit",
       },
 
       {

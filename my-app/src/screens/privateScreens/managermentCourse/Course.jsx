@@ -29,7 +29,7 @@ const Course = () => {
       await axios.delete(`${domainAPI}/course/delete/${id}`);
       message.success("Delete course success!!!");
     } catch (error) {
-      message.error("Delete course error!!!");
+      message.error("The course is being studied by users !!!");
     }
   };
 

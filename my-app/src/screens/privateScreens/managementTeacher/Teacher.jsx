@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Col, Table, Typography, message, Image, Button } from "antd";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
@@ -11,9 +12,10 @@ import { RowStyled } from "./styled";
 const { Title } = Typography;
 
 const Teacher = () => {
+  const navigate = useNavigate();
   const [listTeacher, setListTeacher] = useState([]);
   const getListTeacher = async () => {
-    const res = await axios.get(`${domainAPI}/teacher`);
+    const res = await axios.get(`${domainAPI}/teacher/list`);
     setListTeacher(res.data);
   };
 
@@ -22,7 +24,9 @@ const Teacher = () => {
       await axios.delete(`${domainAPI}/teacher/delete/${id}`);
       message.success("Delete teacher success!!!");
     } catch (error) {
-      message.error("Delete teacher error!!!");
+      message.error(
+        "Teacher is teaching in the course, please change Teacher before delete !!!"
+      );
     }
   };
 
@@ -57,7 +61,7 @@ const Teacher = () => {
 
     {
       title: "Description",
-      dataIndex: "description",
+      dataIndex: "descriptionTeacher",
       key: "descriptionTeacher",
       width: "150px",
     },
@@ -78,8 +82,7 @@ const Teacher = () => {
       render: (value) => (
         <EditOutlined
           onClick={async () => {
-            await deleteTeacher(value);
-            await getListTeacher();
+            navigate(`/teacher/${value}/edit`);
           }}
           style={{ fontSize: "20px", cursor: "pointer" }}
         />
@@ -110,7 +113,13 @@ const Teacher = () => {
       </Col>
 
       <Col span={24} className="col-btn">
-        <Button>Add Teacher</Button>
+        <Button
+          onClick={() => {
+            navigate("/teacher/add");
+          }}
+        >
+          Add Teacher
+        </Button>
       </Col>
       <Col span={24}>
         <Table
