@@ -1,1 +1,1 @@
-export const domainAPI = "http://localhost:8080";
+export const domainAPI = "http://206.189.82.212";
